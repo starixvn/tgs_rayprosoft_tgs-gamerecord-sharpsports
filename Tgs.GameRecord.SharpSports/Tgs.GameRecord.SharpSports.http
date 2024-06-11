@@ -1,0 +1,6 @@
+@Tgs.GameRecord.SharpSports_HostAddress = http://localhost:5072
+
+GET {{Tgs.GameRecord.SharpSports_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
