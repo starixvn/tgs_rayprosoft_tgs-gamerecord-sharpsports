@@ -27,7 +27,7 @@ internal class HandleRecordCommandService(
 		var winLoss = 0.0m;
 		if (command.GameRecord.IsClosed)
 		{
-			externalClosedOn = command.GameRecord.ExternalCreatedOn.ToDateTimeOffset();
+			externalClosedOn = command.GameRecord.ExternalClosedOn.ToDateTimeOffset();
 			externalPayoffOn = command.GameRecord.ExternalPayoffOn.ToDateTimeOffset();
 			betState = command.GameRecord.IsVoid ? Handle.Common.Protos.BetState.Void :
 				   command.GameRecord.IsCancel ? Handle.Common.Protos.BetState.Cancel :
