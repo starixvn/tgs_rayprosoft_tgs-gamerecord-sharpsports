@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Threading.Channels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -123,6 +124,21 @@ internal class PullRecordChannel(
 					parentContext: default);
 				try
 				{
+					logger.LogInformation("{logInformation}",
+						JsonSerializer.Serialize(new
+						{
+							LogOn = DateTime.Now.ToString("u"),
+							Data = new
+							{
+								command.ApiUrl,
+								command.MerchantId,
+								command.ClientId,
+								command.ClientSecret,
+								StartTime = command.StartTime.ToString("u"),
+								EndTime = command.EndTime.ToString("u"),
+							},
+							Message = "This pull record command."
+						}));
 					using var scope = serviceProvider.CreateScope();
 					var service = scope.ServiceProvider.GetRequiredService<ICommandService<PullRecordCommand>>();
 					await service.ExecuteAsync(
@@ -132,7 +148,21 @@ internal class PullRecordChannel(
 				}
 				catch (Exception ex)
 				{
-					logger.LogError(ex, "Process command occur errors.");
+					logger.LogError(ex, "{logError}",
+						JsonSerializer.Serialize(new
+						{
+							LogOn = DateTime.Now.ToString("u"),
+							Data = new
+							{
+								command.ApiUrl,
+								command.MerchantId,
+								command.ClientId,
+								command.ClientSecret,
+								StartTime = command.StartTime.ToString("u"),
+								EndTime = command.EndTime.ToString("u"),
+							},
+							Message = "This pull record command exception occurs."
+						}));
 				}
 			}
 		}

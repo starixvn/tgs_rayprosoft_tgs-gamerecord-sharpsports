@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using System.Text.Json;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Tgs.ServiceUtility;
@@ -18,22 +19,26 @@ internal class HandleRecordCommandService(
 		var externalCreatedOn = command.GameRecord.ExternalCreatedOn.ToDateTimeOffset();
 		var externalClosedOn = DateTimeOffset.UnixEpoch;
 		var externalPayoffOn = DateTimeOffset.UnixEpoch;
-		var betState = Handle.Common.Protos.BetState.Running;
+		var betState = command.GameRecord.State switch
+		{
+			GameInterface.SharpSports.Protos.GameRecordState.Win => Handle.Common.Protos.BetState.Win,
+			GameInterface.SharpSports.Protos.GameRecordState.Loss => Handle.Common.Protos.BetState.Loss,
+			GameInterface.SharpSports.Protos.GameRecordState.Draw => Handle.Common.Protos.BetState.Draw,
+			GameInterface.SharpSports.Protos.GameRecordState.Cancel => Handle.Common.Protos.BetState.Cancel,
+			GameInterface.SharpSports.Protos.GameRecordState.CancelOrder => Handle.Common.Protos.BetState.Cancel,
+			GameInterface.SharpSports.Protos.GameRecordState.FailedOrder => Handle.Common.Protos.BetState.Cancel,
+			GameInterface.SharpSports.Protos.GameRecordState.Void => Handle.Common.Protos.BetState.Void,
+			_ => Handle.Common.Protos.BetState.Running
+		};
 		var cashoutState = Handle.Common.Protos.CashoutState.None;
 		var bet = command.GameRecord.Bet.ToDecimal().GetValueOrDefault(0);
 		var validBet = command.GameRecord.Bet.ToDecimal().GetValueOrDefault(0);
 		var settle = 0.0m;
 		var winLoss = 0.0m;
-		if (command.GameRecord.IsClosed)
+		if (betState != Handle.Common.Protos.BetState.Running)
 		{
 			externalClosedOn = command.GameRecord.ExternalClosedOn.ToDateTimeOffset();
 			externalPayoffOn = command.GameRecord.ExternalPayoffOn.ToDateTimeOffset();
-			betState = command.GameRecord.IsVoid ? Handle.Common.Protos.BetState.Void :
-				   command.GameRecord.IsCancel ? Handle.Common.Protos.BetState.Cancel :
-				   command.GameRecord.IsRefund ? Handle.Common.Protos.BetState.Refund :
-				   command.GameRecord.IsCashout ? Handle.Common.Protos.BetState.Refund :
-				   command.GameRecord.WinLoss.ToDecimal().GetValueOrDefault(0) > 0 ? Handle.Common.Protos.BetState.Win :
-				   Handle.Common.Protos.BetState.Loss;
 			validBet = command.GameRecord.ValidBet.ToDecimal().GetValueOrDefault(0);
 			settle = command.GameRecord.Settle.ToDecimal().GetValueOrDefault(0);
 			winLoss = command.GameRecord.WinLoss.ToDecimal().GetValueOrDefault(0);
@@ -74,10 +79,12 @@ internal class HandleRecordCommandService(
 			cancellationToken: cancellationToken)
 				.ConfigureAwait(false);
 
-		logger.LogInformation("LogOn:{logOn} Subject:{subject} Mesaage:This publication requests information.({request})",
-				DateTime.Now.ToString("o"),
-				Handle.Common.GameRecordHandleNatsConst.GameRecordHandleRequest,
-				new
+		logger.LogInformation("{logInformation}",
+			JsonSerializer.Serialize(new
+			{
+				LogOn = DateTime.Now.ToString("u"),
+				Subject = Handle.Common.GameRecordHandleNatsConst.GameRecordHandleRequest,
+				Data = new
 				{
 					request.GameProviderCode,
 					request.PlayerCode,
@@ -87,6 +94,8 @@ internal class HandleRecordCommandService(
 					ExternalCreatedOn = request.ExternalCreatedOn.ToDateTimeOffset(),
 					ExternalClosedOn = request.ExternalClosedOn.ToDateTimeOffset(),
 					request.BetState
-				});
+				},
+				Message = "This publish message."
+			}));
 	}
 }

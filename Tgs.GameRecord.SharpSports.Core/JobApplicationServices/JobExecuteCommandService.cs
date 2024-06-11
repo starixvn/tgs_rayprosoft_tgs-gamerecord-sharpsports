@@ -37,7 +37,22 @@ internal class JobExecuteCommandService(
 			EndTime = endTime
 		};
 
-		logger.LogDebug("LogOn:{logOn} Parameters:{parameters}", DateTime.Now.ToString("u"), message);
+		logger.LogInformation("{logInformation}",
+			JsonSerializer.Serialize(new
+			{
+				LogOn = DateTime.Now.ToString("u"),
+				Subject = SharpSportsNatsConst.SchedulePublish,
+				Data = new
+				{
+					message.ApiUrl,
+					message.MerchantId,
+					message.ClientId,
+					message.ClientSecret,
+					StartTime = message.StartTime.ToString("u"),
+					EndTime = message.EndTime.ToString("u"),
+				},
+				Message = "This publish message."
+			}));
 
 		await messageSender.PublishAsync(
 			subject: SharpSportsNatsConst.SchedulePublish,

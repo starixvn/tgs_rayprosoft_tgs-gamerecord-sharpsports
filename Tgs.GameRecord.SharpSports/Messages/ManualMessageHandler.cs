@@ -30,7 +30,8 @@ public class ManualMessageHandler(
 					message.ClientSecret,
 					StartTime = message.StartTime.ToString("u"),
 					EndTime = message.EndTime.ToString("u"),
-				}
+				},
+				Message = "This receive message handler."
 			}));
 
 		return dispatcher.PushCommandAsync(
