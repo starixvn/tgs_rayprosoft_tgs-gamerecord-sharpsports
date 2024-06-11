@@ -11,7 +11,7 @@ namespace Tgs.GameRecord.SharpSports.Core;
 internal class PullRecordChannel(
 	ILogger<PullRecordChannel> logger,
 	IServiceProvider serviceProvider,
-	string playerCode) : IDisposable, IAsyncDisposable
+	string key) : IDisposable, IAsyncDisposable
 {
 	private static readonly ActivitySource _ActivitySource = new(name: typeof(PullRecordChannel).FullName!);
 
@@ -30,7 +30,7 @@ internal class PullRecordChannel(
 
 	public event EventHandler? Disposed;
 
-	public string PlayerCode { get; } = playerCode;
+	public string Key { get; } = key;
 
 	~PullRecordChannel()
 	{

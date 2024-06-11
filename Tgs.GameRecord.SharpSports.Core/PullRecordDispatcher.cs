@@ -32,7 +32,7 @@ internal class PullRecordDispatcher(IServiceProvider serviceProvider) : IPullRec
 
 				newCounter.Disposed += (_, _) =>
 				{
-					_ = _counters.TryRemove(newCounter.PlayerCode, out _);
+					_ = _counters.TryRemove(newCounter.Key, out _);
 					scope.Dispose();
 				};
 
