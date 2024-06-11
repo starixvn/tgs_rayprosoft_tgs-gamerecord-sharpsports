@@ -20,7 +20,7 @@ internal class JobExecuteCommandService(
 		? options.Value.IntervalMinutesMinimum
 		: options.Value.IntervalMinutes;
 
-	public async ValueTask ExecuteAsync(JobExecuteCommand command, CancellationToken cancellationToken = default)
+	public ValueTask ExecuteAsync(JobExecuteCommand command, CancellationToken cancellationToken = default)
 	{
 		var currentTime = timeProvider.GetUtcNow();
 
@@ -54,10 +54,9 @@ internal class JobExecuteCommandService(
 				Message = "This publish message."
 			}));
 
-		await messageSender.PublishAsync(
+		return messageSender.PublishAsync(
 			subject: SharpSportsNatsConst.SchedulePublish,
 			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message)),
-			cancellationToken: cancellationToken)
-			.ConfigureAwait(false);
+			cancellationToken: cancellationToken);
 	}
 }
