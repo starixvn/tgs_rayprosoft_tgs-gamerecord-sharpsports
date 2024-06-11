@@ -9,8 +9,8 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.GameRecord.SharpSports.ManualMessageHandler": "Information",
-          "Tgs.GameRecord.SharpSports.ScheduleMessageHandler": "Information",
+          "Tgs.GameRecord.SharpSports.Messages.ManualMessageHandler": "Information",
+          "Tgs.GameRecord.SharpSports.Messages.ScheduleMessageHandler": "Information",
           "Tgs.GameRecord.SharpSports.Core.ApplicationServices.HandleRecordCommandService": "Information" 
         }
       },
