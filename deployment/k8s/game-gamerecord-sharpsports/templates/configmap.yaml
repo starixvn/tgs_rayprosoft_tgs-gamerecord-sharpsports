@@ -9,9 +9,10 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.GameRecord.SharpSports.Messages.ManualMessageHandler": "Information",
-          "Tgs.GameRecord.SharpSports.Messages.ScheduleMessageHandler": "Information",
-          "Tgs.GameRecord.SharpSports.Core.ApplicationServices.HandleRecordCommandService": "Information" 
+          "Grpc.Net.Client.Balancer": "Debug",
+          "Tgs.GameRecord.SharpSports.Messages.ManualMessageHandler": "Warning",
+          "Tgs.GameRecord.SharpSports.Messages.ScheduleMessageHandler": "Warning",
+          "Tgs.GameRecord.SharpSports.Core.ApplicationServices.HandleRecordCommandService": "Warning" 
         }
       },
       "GameRecord": {
