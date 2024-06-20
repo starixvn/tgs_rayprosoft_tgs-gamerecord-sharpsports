@@ -9,8 +9,9 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Grpc.Net.Client.Balancer": "Debug",
-          "Tgs.GameRecord.SharpSports.Messages.ManualMessageHandler": "Warning",
+          "Grpc.Net.Client.Balancer": "Warning",
+          "Grpc.Net.Client.Balancer.DnsResolver": "Debug",
+          "Tgs.GameRecord.SharpSports.Messages.ManualMessageHandler": "Information",
           "Tgs.GameRecord.SharpSports.Messages.ScheduleMessageHandler": "Warning",
           "Tgs.GameRecord.SharpSports.Core.ApplicationServices.HandleRecordCommandService": "Warning" 
         }
