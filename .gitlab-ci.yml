@@ -96,6 +96,8 @@ deploy-prod:
     replica: 1
     DedicatedKey: dedicated_game
     NodeSelectorKey: node-selector_game
+    ingressEnabled: true
+    domain: gamerecord-sharpsports.srvptt.com
   environment:
     name: service-prod
   stage: deploy-prod
@@ -112,3 +114,4 @@ deploy-prod:
   when: manual
   script:
     - deploy_k8s $TgsSettingKey $HelmTemplateFolderName $namespace
+    - create_dns 'prod' 'game-gamerecord-cr'
