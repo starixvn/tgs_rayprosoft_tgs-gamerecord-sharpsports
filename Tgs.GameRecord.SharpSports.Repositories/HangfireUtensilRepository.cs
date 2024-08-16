@@ -1,12 +1,13 @@
-﻿using Tgs.GameRecord.SharpSports.Core.JobApplicationServices;
+﻿using Tgs.GameRecord.SharpSports.Core;
+using Tgs.GameRecord.SharpSports.Core.JobApplicationServices;
 using Tgs.ServiceUtility;
 
-namespace Tgs.GameRecord.SharpSports.Core;
+namespace Tgs.GameRecord.SharpSports.Repositories;
 
-internal class HangfireUtensil(
+internal class HangfireUtensilRepository(
 	ICommandService<JobCheckCommand> jobCheckService,
 	ICommandService<JobExecuteCommand> jobExecuteService,
-	ICommandService<JobInitCommand> jobInitservice) : IHangfireUtensil
+	ICommandService<JobInitCommand> jobInitservice) : IHangfireUtensilRepository
 {
 	public Task JobCheckAsync()
 		=> jobCheckService.ExecuteAsync(new()).AsTask();
