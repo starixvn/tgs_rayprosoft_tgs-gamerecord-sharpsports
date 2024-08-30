@@ -126,7 +126,6 @@ public class HandleRecordCommandServiceUnitTest
 
 		await service.ExecuteAsync(command);
 
-
 		_ = fakeGameRecordHandleClient
 			.Received(1)
 			.HandleAsync(

@@ -1,4 +1,4 @@
-namespace Tgs.GameRecord.SharpSports.Core;
+﻿namespace Tgs.GameRecord.SharpSports.Core;
 
 public record PolicySettingsOptions
 {
