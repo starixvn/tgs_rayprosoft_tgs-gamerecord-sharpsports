@@ -13,7 +13,7 @@ public class InfoController : ControllerBase
 {
 	[HttpGet]
 	public async Task<object> GetAsync(
-		[FromServices] IWebHostEnvironment hostingEnvironment,
+		[FromServices] IWebHostEnvironment webHostEnvironment,
 		[FromServices] IOptions<GameRecordInfoOptions> gameRecordInfoOptions,
 		[FromServices] IOptions<PolicySettingsOptions> policySettingsOptions)
 	{
@@ -27,7 +27,7 @@ public class InfoController : ControllerBase
 			Environment.MachineName,
 			HostName = hostName,
 			HostIp = hostIp?.ToString() ?? string.Empty,
-			Environment = hostingEnvironment.EnvironmentName,
+			Environment = webHostEnvironment.EnvironmentName,
 			OsVersion = $"{Environment.OSVersion}",
 			Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(),
 			ProcessCount = Environment.ProcessorCount,

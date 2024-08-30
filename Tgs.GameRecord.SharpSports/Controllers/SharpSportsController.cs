@@ -22,7 +22,7 @@ public class SharpSportsController : ControllerBase
 		SharpSportsGameRecordMessage source)
 		=> messageSender.PublishAsync(
 			subject: SharpSportsNatsConst.ManualPublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 
 	/// <summary>
@@ -37,6 +37,6 @@ public class SharpSportsController : ControllerBase
 		SharpSportsGameRecordMessage source)
 		=> messageSender.PublishAsync(
 			subject: SharpSportsNatsConst.SchedulePublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 }

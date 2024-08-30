@@ -5,6 +5,7 @@ using Tgs.GameRecord.SharpSports.Core.ApplicationServices;
 using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.SharpSports.Core.UnitTest.ApplicationServices;
+
 public class PullRecordSettlementCommandServiceUnitTest
 {
 	[Fact]
